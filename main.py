@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import os
 import json
@@ -8,6 +9,13 @@ from dotenv import load_dotenv
 load_dotenv()
 
 app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # later replace with your WordPress domain
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 class AnalyzeRequest(BaseModel):
@@ -20,6 +28,10 @@ MODES = {
     "brutal": "Respond bluntly, slightly savage, but not cruel.",
     "analyst": "Respond like a data analyst. Structured, logical, concise."
 }
+
+@app.get("/")
+def home():
+    return {"message": "Crush AI is running"}
 
 @app.post("/analyze-texts")
 def analyze_texts(request: AnalyzeRequest):
