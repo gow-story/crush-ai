@@ -126,6 +126,3 @@ crush-ai/
 - Integration with messaging platforms
 ```
 
----
-
-Want me to also push this directly to the repo, replacing the empty README? Just say the word!
